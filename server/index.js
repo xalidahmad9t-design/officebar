@@ -146,7 +146,7 @@ app.use((error, req, res, next) => {
 // ============ SERVER STARTUP ============
 
 console.log('Starting server...');
-const server = app.listen(PORT, 'localhost', () => {
+const server = app.listen(PORT, () => {
   console.log('Server callback called');
   console.log('\n╔════════════════════════════════════════════════════════════╗');
   console.log('║          🎉 OfficeBar Server Running 🎉                   ║');
