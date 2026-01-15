@@ -145,31 +145,34 @@ app.use((error, req, res, next) => {
 
 // ============ SERVER STARTUP ============
 
-console.log('Starting server...');
-const server = app.listen(PORT, () => {
-  console.log('Server callback called');
-  console.log('\n╔════════════════════════════════════════════════════════════╗');
-  console.log('║          🎉 OfficeBar Server Running 🎉                   ║');
-  console.log('╚════════════════════════════════════════════════════════════╝\n');
-  console.log(`📍 Server: http://localhost:${PORT}`);
-  console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📱 Telegram Notifications: ${process.env.TELEGRAM_BOT_TOKEN ? '✅ Enabled' : '❌ Disabled'}`);
-  console.log(`🎮 Discord Notifications: ${process.env.DISCORD_WEBHOOK_URL ? '✅ Enabled' : '❌ Disabled'}`);
-  console.log(`📧 Gmail Notifications: ${process.env.GMAIL_USER ? '✅ Enabled' : '❌ Disabled'}`);
-  console.log(`\n📚 API Documentation:`);
-  console.log(`   GET  http://localhost:${PORT}/api/health - Server health check`);
-  console.log(`   GET  http://localhost:${PORT}/api/status - System status`);
-  console.log(`   GET  http://localhost:${PORT}/api/menu - Full menu`);
-  console.log(`   POST http://localhost:${PORT}/api/auth/signup - Register user`);
-  console.log(`   POST http://localhost:${PORT}/api/auth/login - Login user`);
-  console.log(`   POST http://localhost:${PORT}/api/orders/create - Create order\n`);
-});
+// Only start server if not running on Vercel
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  console.log('Starting server...');
+  const server = app.listen(PORT, () => {
+    console.log('Server callback called');
+    console.log('\n╔════════════════════════════════════════════════════════════╗');
+    console.log('║          🎉 OfficeBar Server Running 🎉                   ║');
+    console.log('╚════════════════════════════════════════════════════════════╝\n');
+    console.log(`📍 Server: http://localhost:${PORT}`);
+    console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`📱 Telegram Notifications: ${process.env.TELEGRAM_BOT_TOKEN ? '✅ Enabled' : '❌ Disabled'}`);
+    console.log(`🎮 Discord Notifications: ${process.env.DISCORD_WEBHOOK_URL ? '✅ Enabled' : '❌ Disabled'}`);
+    console.log(`📧 Gmail Notifications: ${process.env.GMAIL_USER ? '✅ Enabled' : '❌ Disabled'}`);
+    console.log(`\n📚 API Documentation:`);
+    console.log(`   GET  http://localhost:${PORT}/api/health - Server health check`);
+    console.log(`   GET  http://localhost:${PORT}/api/status - System status`);
+    console.log(`   GET  http://localhost:${PORT}/api/menu - Full menu`);
+    console.log(`   POST http://localhost:${PORT}/api/auth/signup - Register user`);
+    console.log(`   POST http://localhost:${PORT}/api/auth/login - Login user`);
+    console.log(`   POST http://localhost:${PORT}/api/orders/create - Create order\n`);
+  });
 
-server.on('error', (err) => {
-  console.error('❌ Server error:', err.message, err.code);
-  process.exit(1);
-});
+  server.on('error', (err) => {
+    console.error('❌ Server error:', err.message, err.code);
+    process.exit(1);
+  });
 
-console.log('Server setup complete');
+  console.log('Server setup complete');
+}
 
 module.exports = app;
