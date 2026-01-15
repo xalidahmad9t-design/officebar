@@ -1,8 +1,9 @@
 // API Client - handles all communication with the backend
 
 class APIClient {
-  constructor(baseURL = 'http://localhost:3000/api') {
-    this.baseURL = baseURL;
+  constructor(baseURL) {
+    // Use current origin for production, localhost for development
+    this.baseURL = baseURL || `${window.location.origin}/api`;
     this.token = localStorage.getItem('token');
   }
 
@@ -122,14 +123,45 @@ class APIClient {
     return this.request(`/orders/${orderId}`, { method: 'GET' });
   }
 
-  // ============ SYSTEM ============
+  // ============ AUTHENTICATION ============
 
-  async getHealth() {
-    return this.request('/health', { method: 'GET' });
+  isAuthenticated() {
+    return !!this.token;
   }
 
-  async getStatus() {
-    return this.request('/status', { method: 'GET' });
+  logout() {
+    this.token = null;
+    localStorage.removeItem('token');
+  }
+
+  async signup(userData) {
+    const data = await this.request('/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
+
+    if (data.token) {
+      this.setToken(data.token);
+    }
+
+    return data;
+  }
+
+  async login(credentials) {
+    const data = await this.request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    });
+
+    if (data.token) {
+      this.setToken(data.token);
+    }
+
+    return data;
+  }
+
+  async getProfile() {
+    return this.request('/auth/me', { method: 'GET' });
   }
 }
 

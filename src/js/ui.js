@@ -39,12 +39,22 @@ class UIManager {
   }
 
   async checkAuthentication() {
+    try {
+      // First check if server is available
+      await api.getHealth();
+    } catch (error) {
+      console.error('Server not available:', error.message);
+      this.showServerError();
+      return;
+    }
+
     if (api.isAuthenticated()) {
       try {
         const response = await api.getProfile();
         this.user = response.user;
         this.showMenuView();
       } catch (error) {
+        console.log('Authentication check failed:', error.message);
         api.logout();
         this.showLoginView();
       }
@@ -103,6 +113,30 @@ class UIManager {
 
     const loginForm = document.getElementById('loginForm');
     loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+  }
+
+  showServerError() {
+    this.currentView = 'error';
+    const app = document.getElementById('app');
+    app.innerHTML = `
+      <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-header">
+            <h1>☕ OfficeBar</h1>
+            <p>Server Connection Error</p>
+          </div>
+
+          <div class="error-message">
+            <div class="error-icon">⚠️</div>
+            <h3>Unable to connect to server</h3>
+            <p>The OfficeBar server is currently unavailable. Please try again later or contact your IT administrator.</p>
+            <button onclick="location.reload()" class="btn btn-primary">
+              Retry Connection
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   showSignupView() {
