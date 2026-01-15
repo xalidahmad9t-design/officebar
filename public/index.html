@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeBar - Premium Office Beverages</title>
+    <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+    <div id="app">
+        <!-- UI will be rendered here by ui.js -->
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div style="text-align: center; color: white;">
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">☕ OfficeBar</h1>
+                <p style="font-size: 1.25rem;">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/src/js/api.js"></script>
+    <script src="/src/js/ui.js"></script>
+    <script>
+        // Initialize the application
+        const api = new APIClient();
+        const ui = new UIManager();
+    </script>
+</body>
+</html>
